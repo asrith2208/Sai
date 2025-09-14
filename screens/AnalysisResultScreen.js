@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SAI_COLORS, SAI_GRADES } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
+import DummyDataService from '../services/dummyDataService';
 
 const { width } = Dimensions.get('window');
 

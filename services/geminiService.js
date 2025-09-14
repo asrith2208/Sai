@@ -6,7 +6,7 @@ const GEMINI_API_KEY = 'AIzaSyCrLbD4uEqyUIMQobVwOngjvJgVKXDI6Pg';
 class GeminiChatService {
   constructor() {
     this.genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-    this.model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
+    this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     this.chatSession = null;
     this.initialized = false;
   }

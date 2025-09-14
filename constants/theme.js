@@ -24,6 +24,7 @@ export const SAI_COLORS = {
   warning: '#F59E0B',      // Warning Amber
   error: '#EF4444',        // Error Red
   info: '#3B82F6',         // Info Blue
+  purple: '#8B5CF6',       // Purple
 };
 
 // SAI Theme Object

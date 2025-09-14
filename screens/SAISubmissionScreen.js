@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SAI_COLORS } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
+import DummyDataService from '../services/dummyDataService';
 
 const SAISubmissionScreen = ({ navigation, route }) => {
   const { analysisData, videoUri, sport, subcategory, sportData } = route.params;
@@ -35,14 +36,15 @@ const SAISubmissionScreen = ({ navigation, route }) => {
     setIsSubmitting(true);
 
     const submissionData = {
-      analysisData,
-      videoUri,
+      userId: user.id,
+      userName: user.fullName,
+      userEmail: user.email || user.phoneNumber,
       sport,
       subcategory,
+      videoUri,
+      aiScore: analysisData.score,
       additionalInfo,
       contactPreference,
-      submissionDate: new Date().toISOString(),
-      status: 'under_review',
       userInfo: {
         name: user.fullName,
         email: user.email,
@@ -55,13 +57,13 @@ const SAISubmissionScreen = ({ navigation, route }) => {
     };
 
     try {
-      const result = await submitToSAI(submissionData);
+      const result = await DummyDataService.addSubmission(submissionData);
       
-      if (result.success) {
+      if (result) {
         setIsSubmitting(false);
         setShowSuccessModal(true);
       } else {
-        throw new Error(result.error);
+        throw new Error('Failed to submit');
       }
     } catch (error) {
       setIsSubmitting(false);

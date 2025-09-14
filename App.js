@@ -13,6 +13,9 @@ import RegisterScreen from './screens/auth/RegisterScreen';
 
 // Import main app navigator
 import MainAppNavigator from './navigation/MainAppNavigator';
+import SAITeamDashboard from './screens/SAITeamDashboard';
+import SubmissionReviewScreen from './screens/SubmissionReviewScreen';
+import DummyDataService from './services/dummyDataService';
 
 const Stack = createStackNavigator();
 
@@ -34,9 +37,24 @@ const AuthNavigator = () => {
   );
 };
 
+// SAI Team Navigator
+const SAITeamNavigator = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        cardStyle: { backgroundColor: SAI_COLORS.white },
+      }}
+    >
+      <Stack.Screen name="SAITeamDashboard" component={SAITeamDashboard} />
+      <Stack.Screen name="SubmissionReview" component={SubmissionReviewScreen} />
+    </Stack.Navigator>
+  );
+};
+
 // Root Navigator
 const RootNavigator = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
     // You could add a loading screen here
@@ -45,12 +63,21 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer>
-      {isAuthenticated ? <MainAppNavigator /> : <AuthNavigator />}
+      {isAuthenticated ? (
+        user?.isTeamMember ? <SAITeamNavigator /> : <MainAppNavigator />
+      ) : (
+        <AuthNavigator />
+      )}
     </NavigationContainer>
   );
 };
 
 export default function App() {
+  React.useEffect(() => {
+    // Initialize dummy data when app starts
+    DummyDataService.initializeDummyData();
+  }, []);
+
   return (
     <AuthProvider>
       <StatusBar style="light" backgroundColor={SAI_COLORS.orange} />

@@ -118,6 +118,32 @@ export const AuthProvider = ({ children }) => {
     try {
       setIsLoading(true);
       
+      // Special SAI Team login
+      if (email === 'sai@team.gov.in' && password === 'SAI2024!') {
+        const saiTeamUser = {
+          id: 'sai_team_001',
+          email,
+          fullName: 'SAI Team Administrator',
+          role: 'admin',
+          isTeamMember: true,
+          permissions: ['view_all_submissions', 'approve_reject', 'manage_users'],
+          createdAt: new Date().toISOString(),
+          profile: {
+            isProfileComplete: true,
+            currentStatus: 'active',
+            department: 'Sports Authority of India'
+          }
+        };
+        
+        const authToken = `sai_team_token_${Date.now()}`;
+        await AsyncStorage.setItem('userData', JSON.stringify(saiTeamUser));
+        await AsyncStorage.setItem('authToken', authToken);
+        
+        setUser(saiTeamUser);
+        setIsAuthenticated(true);
+        return { success: true, user: saiTeamUser, isTeamMember: true };
+      }
+      
       // In a real app, this would be an API call
       // For demo, we'll check if user exists in AsyncStorage
       const userData = await AsyncStorage.getItem('userData');
